@@ -12,15 +12,64 @@ MyVertex* find(MyVertex* x)
 {
     if (x->parent != nullptr)
     {
-        //cout << x << " ";
         x = find(x->parent);
     }
-    //cout << x << endl;
     return x;
 }
 
 int main()
 {
+    TreeAVL<MyVertex, string> arrVertex;
+    int nVertex;
+    MyVector<Edge> queueVertex;
+    cout << "Num Vertex: ";
+    cin >> nVertex;
+
+    for (int i = 0; i < nVertex; i++)
+    {
+        string keyVertexFirst, keyVertexSecond;
+        int weight;
+
+        cin >> keyVertexFirst >> keyVertexSecond >> weight;
+
+        if (!arrVertex.GetExists(keyVertexFirst))
+        {
+            MyVertex newVertex(keyVertexFirst);
+            arrVertex.Insert(keyVertexFirst, newVertex);
+        }
+        if (!arrVertex.GetExists(keyVertexSecond))
+        {
+            MyVertex newVertex(keyVertexSecond);
+            arrVertex.Insert(keyVertexSecond, newVertex);
+        }    
+
+        MyVertex *x = (arrVertex.GetExists(keyVertexFirst));
+        MyVertex *y = (arrVertex.GetExists(keyVertexSecond));
+
+        Edge newEdge(x, y, weight);
+        queueVertex.AddBack(newEdge);
+    }
+    
+    queueVertex.BubbleSort();
+
+    while (queueVertex.GetSizeVector() > 0)
+    {
+        Edge newEdge = queueVertex.GetBack();
+        MyVertex* x = find(newEdge.firstVertex);
+        MyVertex* y = find(newEdge.secondVertex);
+        //cout << x->name;
+        //cout << y->name;
+        if (x != y)
+        {
+            
+            x->parent = y;
+            cout << newEdge.firstVertex->name << " " << newEdge.secondVertex->name << " " << newEdge.weight << endl;
+        }
+        queueVertex.DeleteBack();
+    }
+} 
+
+
 
     //MyVertex a("a");
     //MyVertex b("b");
@@ -103,69 +152,3 @@ int main()
         if (queueVertex.GetSizeVector() != 0)
             queueVertex.DeleteBack();
     }*/
-
-    
-
-
-    TreeAVL<MyVertex, string> arrVertex;
-    int nVertex;
-    MyVector<Edge> queueVertex;
-    cout << "Num Vertex: ";
-    cin >> nVertex;
-
-    for (int i = 0; i < nVertex; i++)
-    {
-        string keyVertexFirst, keyVertexSecond;
-        int weight;
-
-        cin >> keyVertexFirst >> keyVertexSecond >> weight;
-
-        if (!arrVertex.GetExists(keyVertexFirst))
-        {
-            MyVertex newVertex(keyVertexFirst);
-            arrVertex.Insert(keyVertexFirst, newVertex);
-        }
-        if (!arrVertex.GetExists(keyVertexSecond))
-        {
-            MyVertex newVertex(keyVertexSecond);
-            arrVertex.Insert(keyVertexSecond, newVertex);
-        }     
-
-        //arrVertex.PrintTree();
-
-        MyVertex *x = (arrVertex.GetExists(keyVertexFirst));
-        MyVertex *y = (arrVertex.GetExists(keyVertexSecond));
-
-        Edge newEdge(x, y, weight);
-        queueVertex.AddBack(newEdge);
-    }
-
-    //for (int i = 0; i < nVertex; i++)
-    //{
-    //    Edge newEdge = queueVertex.GetBack();
-    //    cout << newEdge.firstVertex->name << " " << newEdge.firstVertex->parent << " " << newEdge.firstVertex << endl;
-    //    cout << newEdge.secondVertex->name << " " << newEdge.secondVertex->parent << " " << newEdge.secondVertex << endl;
-    //    cout << newEdge.weight << endl << endl;
-    //    
-    //    if (queueVertex.GetSizeVector() != 0)
-    //        queueVertex.DeleteBack();
-    //}
-    
-    queueVertex.BubbleSort();
-
-    while (queueVertex.GetSizeVector() > 0)
-    {
-        Edge newEdge = queueVertex.GetBack();
-        MyVertex* x = find(newEdge.firstVertex);
-        MyVertex* y = find(newEdge.secondVertex);
-        //cout << x->name;
-        //cout << y->name;
-        if (x != y)
-        {
-            
-            x->parent = y;
-            cout << newEdge.firstVertex->name << " " << newEdge.secondVertex->name << " " << newEdge.weight << endl;
-        }
-        queueVertex.DeleteBack();
-    }
-}
