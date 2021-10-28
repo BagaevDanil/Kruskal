@@ -1,14 +1,13 @@
 ﻿#include <iostream>
 #include "TreeAVL.h"
 #include "Queue.h"
-#include "MyVertex.h"
+#include "Vertex.h"
 #include "MyVector.h"
 #include "Edge.h"
 
 using namespace std;
 
-
-MyVertex* find(MyVertex* x)
+Vertex* find(Vertex* x)
 {
     if (x->parent != nullptr)
     {
@@ -21,7 +20,7 @@ MyVertex* find(MyVertex* x)
 
 int main()
 {
-    TreeAVL<MyVertex, string> arrVertex;
+    TreeAVL<Vertex, string> arrVertex;
     int nVertex;
     MyVector<Edge> queueVertex;
     cout << "Num Vertex: ";
@@ -36,17 +35,17 @@ int main()
 
         if (!arrVertex.GetExists(keyVertexFirst))
         {
-            MyVertex newVertex(keyVertexFirst);
+            Vertex newVertex(keyVertexFirst);
             arrVertex.Insert(keyVertexFirst, newVertex);
         }
         if (!arrVertex.GetExists(keyVertexSecond))
         {
-            MyVertex newVertex(keyVertexSecond);
+            Vertex newVertex(keyVertexSecond);
             arrVertex.Insert(keyVertexSecond, newVertex);
         }    
 
-        MyVertex *x = (arrVertex.GetExists(keyVertexFirst));
-        MyVertex *y = (arrVertex.GetExists(keyVertexSecond));
+        Vertex *x = (arrVertex.GetExists(keyVertexFirst));
+        Vertex *y = (arrVertex.GetExists(keyVertexSecond));
 
         Edge newEdge(x, y, weight);
         queueVertex.AddBack(newEdge);
@@ -57,19 +56,18 @@ int main()
     while (queueVertex.GetSizeVector() > 0)
     {
         Edge newEdge = queueVertex.GetBack();
-        MyVertex* x = find(newEdge.firstVertex);
-        MyVertex* y = find(newEdge.secondVertex);
-        //x = x->parent;
-        //y = y->parent;
+        Vertex* x = find(newEdge.firstVertex);
+        Vertex* y = find(newEdge.secondVertex);
         cout << newEdge.firstVertex->name << "::::" << newEdge.secondVertex->name << endl;
         cout << x->name  << "::::" << y->name << endl;
         if (x != y)
         {
             
             x->parent = y;
-            //cout << newEdge.firstVertex->name << " " << newEdge.secondVertex->name << " " << newEdge.weight << endl;
+            cout << newEdge.firstVertex->name << " " << newEdge.secondVertex->name << " " << newEdge.weight << endl;
         }
-        queueVertex.Print();
+        //queueVertex.Print();
+        arrVertex.Print();
         cout << "\n\n";
         queueVertex.DeleteBack();
     }
@@ -84,6 +82,14 @@ int main()
 //e d 11
 //d c 20
 
+//a b 1
+//d a 1
+//a c 1
+//b f 1
+//c f 1
+//d c 1
+//d e 1
+//e f 1
 
     //MyVertex a("a");
     //MyVertex b("b");

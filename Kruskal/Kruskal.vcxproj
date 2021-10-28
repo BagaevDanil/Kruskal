@@ -142,14 +142,14 @@
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="Kruskal.cpp" />
     <ClCompile Include="MyVector.cpp" />
-    <ClCompile Include="MyVertex.cpp" />
+    <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="TreeAVL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Edge.h" />
     <ClInclude Include="MyVector.h" />
-    <ClInclude Include="MyVertex.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="TreeAVL.h" />
   </ItemGroup>

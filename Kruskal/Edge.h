@@ -1,14 +1,14 @@
 #pragma once
-#include "MyVertex.h"
+#include "Vertex.h"
 
 class Edge
 {
 public:
-	MyVertex* firstVertex;
-	MyVertex* secondVertex;
+	Vertex* firstVertex;
+	Vertex* secondVertex;
 	int weight;
 
-	Edge(MyVertex* FirstVertex, MyVertex* SecondVertex, int Weight)
+	Edge(Vertex* FirstVertex, Vertex* SecondVertex, int Weight)
 	{
 		this->firstVertex = FirstVertex;
 		this->secondVertex = SecondVertex;

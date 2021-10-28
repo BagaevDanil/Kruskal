@@ -27,7 +27,7 @@
     <ClCompile Include="Queue.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="MyVertex.cpp">
+    <ClCompile Include="Vertex.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Edge.cpp">
@@ -44,7 +44,7 @@
     <ClInclude Include="Queue.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="MyVertex.h">
+    <ClInclude Include="Vertex.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Edge.h">
