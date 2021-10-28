@@ -12,8 +12,10 @@ MyVertex* find(MyVertex* x)
 {
     if (x->parent != nullptr)
     {
-        x = find(x->parent);
+        x->parent = find(x->parent);
     }
+    if (x->parent)
+        return x->parent;
     return x;
 }
 
@@ -57,18 +59,30 @@ int main()
         Edge newEdge = queueVertex.GetBack();
         MyVertex* x = find(newEdge.firstVertex);
         MyVertex* y = find(newEdge.secondVertex);
-        //cout << x->name;
-        //cout << y->name;
+        //x = x->parent;
+        //y = y->parent;
+        cout << newEdge.firstVertex->name << "::::" << newEdge.secondVertex->name << endl;
+        cout << x->name  << "::::" << y->name << endl;
         if (x != y)
         {
             
             x->parent = y;
-            cout << newEdge.firstVertex->name << " " << newEdge.secondVertex->name << " " << newEdge.weight << endl;
+            //cout << newEdge.firstVertex->name << " " << newEdge.secondVertex->name << " " << newEdge.weight << endl;
         }
+        queueVertex.Print();
+        cout << "\n\n";
         queueVertex.DeleteBack();
     }
 } 
-
+//a e 30
+//a b 1
+//a d 8
+//a c 2
+//b e 4
+//b c 6
+//e c 9
+//e d 11
+//d c 20
 
 
     //MyVertex a("a");

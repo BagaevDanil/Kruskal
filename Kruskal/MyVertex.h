@@ -22,13 +22,16 @@ public:
 
 	void operator=(const MyVertex& other)
 	{
-		//this->parent = this->parent;
+		this->parent = other.parent;
 		this->name = other.name;
 	}
 
 	friend ostream& operator<<(ostream& os, const MyVertex& dt)
 	{
-		os << dt.name << "|" << dt.parent << "|" << &dt;
+		if (dt.parent)
+			os << dt.name << "|" << (dt.parent)->name << "";
+		else
+			os << dt.name << "|" << 0 << "";
 		return os;
 	}
 };

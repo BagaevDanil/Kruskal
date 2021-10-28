@@ -31,6 +31,12 @@ public:
 		return this->weight < RightValue.weight;
 	}
 
+	friend ostream& operator<<(ostream& os, const Edge& dt)
+	{
+		os << *dt.firstVertex << "_-_" << *dt.secondVertex << endl;
+		return os;
+	}
+
 };
 
 //bool operator>(const Edge& LeftValue, const Edge& RightValue)
