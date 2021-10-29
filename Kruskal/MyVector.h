@@ -36,6 +36,7 @@ public:
     int GetSizeMemory();
     void SortTimsort();
     void BubbleSort();
+    //void BubbleSortForEdgeVertexName(); //----
     void RandomMix();
     void RandomFill(int NewSizeVector);
     bool IsSort();
@@ -43,9 +44,16 @@ public:
     T GetBack();
     T GetFront();
 
+    T& operator[] (const int index);
 };
 
 //-----------------------------------------------------------------------------------------------------
+
+template<class T>
+inline T& MyVector<T>::operator[](const int index)
+{
+    return m_arr[index];
+}
 
 template <class T>
 inline MyVector<T>::MyVector()

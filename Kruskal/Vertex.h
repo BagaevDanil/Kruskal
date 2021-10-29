@@ -10,18 +10,8 @@ public:
 	string name;
 	int amount;
 
-	Vertex(string Name)
-	{
-		this->name = Name;
-		parent = nullptr;
-		amount = 1;
-	}
-
-	Vertex()
-	{
-		parent = nullptr;
-		amount = 1;
-	}
+	Vertex(string Name);
+	Vertex();
 
 	void operator=(const Vertex& other)
 	{
@@ -39,3 +29,16 @@ public:
 		return os;
 	}
 };
+
+inline Vertex::Vertex(string Name)
+{
+	this->name = Name;
+	parent = nullptr;
+	amount = 1;
+}
+
+inline Vertex::Vertex()
+{
+	parent = nullptr;
+	amount = 1;
+}
