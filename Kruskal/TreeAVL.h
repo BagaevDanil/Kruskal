@@ -13,6 +13,7 @@ private:
 	{
 	public:
 		KeyT key;
+		int keySerialNumber;
 		T value;
 		unsigned int height;
 		Node<T, KeyT>* left;
@@ -23,7 +24,7 @@ private:
 			this->key = Key;
 			this->value = Value;
 			left = right = nullptr;
-			height = 0; //--------------------------------------------
+			height = 1; //--------------------------------------------
 		}
 	};
 
@@ -42,16 +43,24 @@ private:
 	Node<T, KeyT>* RemoveMin(Node<T, KeyT>* p);
 	Node<T, KeyT>* RemovePrivate(Node<T, KeyT>* p, KeyT k);
 
-	T* GetExistsPrivate(Node<T, KeyT>* p, KeyT k);
+	T* GetPrivate(Node<T, KeyT>* p, KeyT k);
+	int GetkeySerialNumberPrivate(Node<T, KeyT>* p, KeyT k);
+	KeyT GetkeyPrivate(Node<T, KeyT>* p, int Key);
+
+	int AssignKeysPrivate(Node<T, KeyT>* Unit, int KeyMeaning);
 
 public:
+	void AssignKeys();
 	TreeAVL(KeyT Key, T Value);
 	TreeAVL();
 	void Insert(KeyT Key, T Value);
 	void Remove(KeyT k);
 	void PrintTree();
 	void Print();
-	T* GetExists(KeyT k);
+	
+	T* Get(KeyT k);
+	int GetkeySerialNumber(KeyT k);
+	KeyT GetKey(int Key);
 };
 
 //-------------------------------------------------------------------------------\\
@@ -127,7 +136,7 @@ inline TreeAVL<T, KeyT>::Node<T, KeyT>* TreeAVL<T, KeyT>::Balance(Node<T, KeyT>*
 	else if (BalanceFactor == -2) //RotateRight
 	{
 		if (GetBalanceFactor(Unit->left) > 0) //BigRotateRight
-			Unit->left = RotateRight(Unit->left);
+			Unit->left = RotateLeft(Unit->left);
 		Unit = RotateRight(Unit);
 	}
 	return Unit;
@@ -145,7 +154,8 @@ inline TreeAVL<T, KeyT>::Node<T, KeyT>* TreeAVL<T, KeyT>::InsertPrivate(Node<T, 
 		Unit->right = InsertPrivate(Unit->right, Key, Value);
 	else
 		exit(666666);
-
+	//PrintTree();
+	//cout << "----------------------------------------" << endl;
 	return (Balance(Unit));
 }
 
@@ -160,16 +170,16 @@ inline void TreeAVL<T, KeyT>::PrintTreePrivate(Node<T, KeyT>* Unit)
 {
 	if (!Unit)
 		return;
-	cout << "\n\n\n[" << Unit->key << "]" << Unit->value;
+	cout << "\n\n\n[" << Unit->key << "," << Unit->keySerialNumber << "]" << Unit->value;
 	cout << "\n|\t\\\n";
 	if (!Unit->left)
 		cout << "[null]";
 	else
-		cout << "[" << Unit->left->key << "]" << Unit->left->value;
+		cout << "[" << Unit->left->key << "," << Unit->left->keySerialNumber << "]" << Unit->left->value;
 	if (!Unit->right)
 		cout << "\t[null]";
 	else
-		cout << "\t[" << Unit->right->key << "]" << Unit->right->value;
+		cout << "\t[" << Unit->right->key << "," << Unit->right->keySerialNumber << "]" << Unit->right->value;
 
 	PrintTreePrivate(Unit->right);
 	PrintTreePrivate(Unit->left);
@@ -261,22 +271,81 @@ inline TreeAVL<T, KeyT>::Node<T, KeyT>* TreeAVL<T, KeyT>::PrintPrivate(Node<T, K
 }
 
 template <class T, class KeyT>
-inline T* TreeAVL<T, KeyT>::GetExistsPrivate(Node<T, KeyT>* Unit, KeyT Key)
+inline T* TreeAVL<T, KeyT>::GetPrivate(Node<T, KeyT>* Unit, KeyT Key)
 {
 	if (!Unit)
 		return nullptr;
 
 	if (Key < Unit->key)
-		return(GetExistsPrivate(Unit->left, Key));
+		return(GetPrivate(Unit->left, Key));
 	else if (Key > Unit->key)
-		return(GetExistsPrivate(Unit->right, Key));
+		return(GetPrivate(Unit->right, Key));
 	else
 		return &Unit->value;
 }
 
 template <class T, class KeyT>
-inline T* TreeAVL<T, KeyT>::GetExists(KeyT Key)
+inline T* TreeAVL<T, KeyT>::Get(KeyT Key)
 {
 	Node<T, KeyT>* demo = m_head;
-	return GetExistsPrivate(demo, Key);
+	return GetPrivate(demo, Key);
+}
+
+template<class T, class KeyT>
+inline void TreeAVL<T, KeyT>::AssignKeys()
+{
+	AssignKeysPrivate(m_head, 0);
+}
+
+template<class T, class KeyT>
+inline int TreeAVL<T, KeyT>::AssignKeysPrivate(Node<T, KeyT>* Unit, int Key)
+{
+	if (!Unit)
+		return Key;
+	
+	Unit->keySerialNumber = AssignKeysPrivate(Unit->left, Key);
+
+	return AssignKeysPrivate(Unit->right, Unit->keySerialNumber + 1);
+}
+
+template <class T, class KeyT>
+inline int TreeAVL<T, KeyT>::GetkeySerialNumberPrivate(Node<T, KeyT>* Unit, KeyT Key)
+{
+	if (!Unit)
+		exit(666666);
+
+	if (Key < Unit->key)
+		return(GetkeySerialNumberPrivate(Unit->left, Key));
+	else if (Key > Unit->key)
+		return(GetkeySerialNumberPrivate(Unit->right, Key));
+	else
+		return Unit->keySerialNumber;
+}
+
+template <class T, class KeyT>
+inline int TreeAVL<T, KeyT>::GetkeySerialNumber(KeyT Key)
+{
+	Node<T, KeyT>* demo = m_head;
+	return GetkeySerialNumberPrivate(demo, Key);
+}
+
+template<class T, class KeyT>
+inline KeyT TreeAVL<T, KeyT>::GetkeyPrivate(Node<T, KeyT>* Unit, int Key)
+{
+	if (!Unit)
+		exit(666666);
+
+	if (Key < Unit->keySerialNumber)
+		return(GetkeyPrivate(Unit->left, Key));
+	else if (Key > Unit->keySerialNumber)
+		return(GetkeyPrivate(Unit->right, Key));
+	else
+		return Unit->key;
+}
+
+template<class T, class KeyT>
+inline KeyT TreeAVL<T, KeyT>::GetKey(int Key)
+{
+	Node<T, KeyT>* demo = m_head;
+	return GetkeyPrivate(demo, Key);
 }

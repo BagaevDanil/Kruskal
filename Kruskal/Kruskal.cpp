@@ -21,7 +21,7 @@ Vertex* find(Vertex* x)
 int main()
 {
     TreeAVL<Vertex, string> arrVertex;
-    int nVertex;
+    int nVertex, n = 0;
     MyVector<Edge> queueVertex;
     cout << "Num Vertex: ";
     cin >> nVertex;
@@ -33,47 +33,88 @@ int main()
 
         cin >> keyVertexFirst >> keyVertexSecond >> weight;
 
-        if (!arrVertex.GetExists(keyVertexFirst))
+        if (!arrVertex.Get(keyVertexFirst))
         {
             Vertex newVertex(keyVertexFirst);
             arrVertex.Insert(keyVertexFirst, newVertex);
+            n++;
         }
-        if (!arrVertex.GetExists(keyVertexSecond))
+        if (!arrVertex.Get(keyVertexSecond))
         {
             Vertex newVertex(keyVertexSecond);
             arrVertex.Insert(keyVertexSecond, newVertex);
+            n++;
         }    
 
-        Vertex *x = (arrVertex.GetExists(keyVertexFirst));
-        Vertex *y = (arrVertex.GetExists(keyVertexSecond));
+        Vertex *x = (arrVertex.Get(keyVertexFirst));
+        Vertex *y = (arrVertex.Get(keyVertexSecond));
 
         Edge newEdge(x, y, weight);
         queueVertex.AddBack(newEdge);
+        
+        //arrVertex.PrintTree();
+        //cout << "\n###########################################################";
     }
     
-    queueVertex.BubbleSort();
+    //queueVertex.BubbleSort();
+    queueVertex.SortTimsort();
+    arrVertex.AssignKeys();
+    //arrVertex.PrintTree();
 
+    int inf = -1;
+    int adjacencyMatrixArr[50][50];
+    for (int i = 0; i < 50; i++)
+        for (int j = 0; j < 50; j++)
+            adjacencyMatrixArr[i][j] = inf;
+
+    cout << endl;
     while (queueVertex.GetSizeVector() > 0)
     {
         Edge newEdge = queueVertex.GetBack();
         Vertex* x = find(newEdge.firstVertex);
         Vertex* y = find(newEdge.secondVertex);
-        cout << newEdge.firstVertex->name << "::::" << newEdge.secondVertex->name << endl;
-        cout << x->name  << "::::" << y->name << endl;
+        //cout << newEdge.firstVertex->name << "::::" << newEdge.secondVertex->name << endl;--
+        //cout << x->name << "(" << x->amount << ")" << "::::" << y->name << "(" << y->amount << ")" << endl;--
         if (x != y)
-        {
-            
+        {           
             x->parent = y;
+            y->amount += x->amount;
+            int firstIndex = arrVertex.GetkeySerialNumber(newEdge.firstVertex->name);
+            int secondIndex = arrVertex.GetkeySerialNumber(newEdge.secondVertex->name);
+            adjacencyMatrixArr[firstIndex][secondIndex] = adjacencyMatrixArr[secondIndex][firstIndex] = newEdge.weight;
             cout << newEdge.firstVertex->name << " " << newEdge.secondVertex->name << " " << newEdge.weight << endl;
         }
         //queueVertex.Print();
-        arrVertex.Print();
-        cout << "\n\n";
+        //arrVertex.Print();--
+        //cout << "\n\n";--
         queueVertex.DeleteBack();
     }
+    
+    cout << "\t";
+    for (int i = 0; i < n; i++)
+        cout << arrVertex.GetKey(i) << "\t";
+    cout << endl;
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << arrVertex.GetKey(i) << "\t";
+        for (int j = 0; j < n; j++)
+        {
+            adjacencyMatrixArr[i][j] == -1 ? cout << ".\t" : cout << adjacencyMatrixArr[i][j] << "\t";
+        }
+        cout << endl;
+    }
 } 
+
+//1 2 0
+//3 4 0
+//5 6 0
+//7 8 0
+//9 10 0
+//10 11 0
+
 //a e 30
-//a b 1
+//a b 12
 //a d 8
 //a c 2
 //b e 4
@@ -82,15 +123,25 @@ int main()
 //e d 11
 //d c 20
 
-//a b 1
-//d a 1
-//a c 1
-//b f 1
-//c f 1
-//d c 1
-//d e 1
-//e f 1
+//a d 3
+//a e 2
+//c f 4
+//b c 5
+//a b 7
+//e g 8
+//f e 10
+//c a 11
 
+//1 2 0
+//2 3 0
+//3 4 0
+//5 6 0
+//6 7 0
+//7 8 0
+//9 1 0
+//10 11 0
+//11 12 0
+//13 14 0
     //MyVertex a("a");
     //MyVertex b("b");
     //MyVertex c("c");

@@ -20,8 +20,8 @@ private:
         int length;
     };
     int GetMinrun(int n);
-    void sortInsertionPart(int* arr, int indexFirst, int indexLast);
-    void merge(int* arr, int firstIndexStart, int firstLenght, int secondIndexStart, int secondLenght);
+    void sortInsertionPart(T* arr, int indexFirst, int indexLast);
+    void merge(T* arr, int firstIndexStart, int firstLenght, int secondIndexStart, int secondLenght);
 public:
     MyVector();
     ~MyVector();
@@ -175,15 +175,15 @@ inline int MyVector<T>::GetMinrun(int n)
 }
 
 template<class T>
-inline void MyVector<T>::sortInsertionPart(int* arr, int indexFirst, int indexLast)
+inline void MyVector<T>::sortInsertionPart(T* arr, int indexFirst, int indexLast)
 {
     for (int i = indexFirst + 1; i < indexLast; ++i)
     {
-        int current = arr[i];
+        T current = arr[i];
         int j = i - 1;
-        while ((j >= indexFirst) && (current < arr[j]))
+        while ((j >= indexFirst) && (current > arr[j])) //
         {
-            int num = arr[j];
+            T num = arr[j];
             arr[j] = arr[j + 1];
             arr[j + 1] = num;
             --j;
@@ -192,9 +192,9 @@ inline void MyVector<T>::sortInsertionPart(int* arr, int indexFirst, int indexLa
 }
 
 template<class T>
-inline void MyVector<T>::merge(int* arr, int firstIndexStart, int firstLenght, int secondIndexStart, int secondLenght)
+inline void MyVector<T>::merge(T* arr, int firstIndexStart, int firstLenght, int secondIndexStart, int secondLenght)
 {
-    int* temporary = new int[firstLenght];
+    T* temporary = new T[firstLenght];
 
     for (int i = 0; i < firstLenght; i++)
         temporary[i] = arr[firstIndexStart + i];
@@ -210,12 +210,14 @@ inline void MyVector<T>::merge(int* arr, int firstIndexStart, int firstLenght, i
             arr[arrIndex] = temporary[firstIndexMerge];
             firstIndexMerge++;
         }
-        else if (arr[secondIndexMerge] <= temporary[firstIndexMerge])
+        //else if (arr[secondIndexMerge] <= temporary[firstIndexMerge]) 
+        else
         {
             arr[arrIndex] = arr[secondIndexMerge];
             secondIndexMerge++;
 
         }
+
         if (secondIndexMerge == secondIndexStart + secondLenght)
         {
             if (firstIndexMerge != firstLenght)
