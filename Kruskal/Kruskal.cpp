@@ -144,7 +144,7 @@ int main()
     TreeAVL<Vertex, string> arrVertex;
     int nEdges, nVertex = 0;
     MyVector<Edge> queueEdge;
-    cout << "Num Vertex: ";
+    cout << "Num Edges: ";
     cin >> nEdges;
 
     for (int i = 0; i < nEdges; i++)
